@@ -41,6 +41,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
 
@@ -49,6 +50,7 @@ UART_HandleTypeDef huart2;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -56,6 +58,21 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+//uint8_t readSerial(int BUFNUM, uint8_t *indexRead, uint8_t buf[128]){
+//	uint8_t readData = 0;
+//
+//	int index = huart2.hdmarx->Instance->CNDTR;//バッファー残容�?
+//	index = BUFNUM - index;//�?新の受信�?ータ位置
+//
+//	int remainData = index - indexRead;//ま�?読み込んで�?な�?�?ータ数
+//	if(remainData < 0){remainData = remainData + BUFNUM;}
+//	//読み込み済み�?ータ位置より、最新の受信�?ータ位置が前にある時�?�ま�?読み込んで�?な�?�?ータ数を正しい値にする(バッファー�?で受信�?ータが�?周してた�?��?)
+//
+//	if(remainData > 0){
+//		readData = buf[indexRead]
+//	}
+//	return remainData;
+//}
 
 /* USER CODE END 0 */
 
@@ -66,6 +83,8 @@ static void MX_USART2_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  uint8_t rxBuf[128];
+  int indexRead = 0;
 
   /* USER CODE END 1 */
 
@@ -87,6 +106,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
@@ -94,16 +114,36 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint8_t buffer;
+  HAL_UART_Receive_DMA(&huart2,rxBuf,sizeof(rxBuf));
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if(HAL_GPIO_ReadPin(SWITCH_GPIO_Port,SWITCH_Pin)==1){
-		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);   //LEDを点灯
-	  }else{
-		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET); //LEDを消�?�
-	  }
+	uint8_t readData = 0;
+
+	int index = huart2.hdmarx->Instance->CNDTR;//バッファー残容�?
+	index = sizeof(rxBuf) - index;//�?新の受信�?ータ位置
+
+	int remainData = index - indexRead;//ま�?読み込んで�?な�?�?ータ数
+	if(remainData < 0){remainData = remainData + sizeof(rxBuf);}
+	//読み込み済み�?ータ位置より、最新の受信�?ータ位置が前にある時�?�ま�?読み込んで�?な�?�?ータ数を正しい値にする(バッファー�?で受信�?ータが�?周してた�?��?)
+
+	if(remainData > 0){
+		readData = rxBuf[indexRead];
+		indexRead++;
+		if(indexRead == sizeof(rxBuf)){indexRead = 0;}
+		HAL_UART_Transmit(&huart2, &readData, 1, 100);
+	}
+
+
+
+//	  if(HAL_GPIO_ReadPin(SWITCH_GPIO_Port,SWITCH_Pin)==1){
+//		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);   //LEDを点灯
+//	  }else{
+//		  HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET); //LEDを消�???��?��
+//	  }
 
 
 
@@ -163,7 +203,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
+  huart2.Init.BaudRate = 460800;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -179,6 +219,22 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE BEGIN USART2_Init 2 */
 
   /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
 
 }
 
