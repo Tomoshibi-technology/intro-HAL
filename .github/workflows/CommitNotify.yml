@@ -1,0 +1,11 @@
+name: CommitNotify
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: DiscordMassage
+      run: curl -X POST -F content="${{ github.actor }}コミットいいね！" ${{ secrets.WEBHOOK_URL }}
