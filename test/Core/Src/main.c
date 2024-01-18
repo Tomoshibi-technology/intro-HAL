@@ -99,10 +99,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);   //LEDを点灯
-//	HAL_Delay(500); //500ms待つ
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET); //LEDを消灯
-//	HAL_Delay(500); //500ms待つ
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);   //LEDを点灯
+	HAL_Delay(500); //500ms待つ
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET); //LEDを消灯
+	HAL_Delay(500); //500ms待つ
 
 	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 	  HAL_Delay(500);
