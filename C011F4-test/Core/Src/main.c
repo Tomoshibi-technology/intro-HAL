@@ -119,10 +119,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,1);
-//   	HAL_Delay(200);
-//   	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,0);
-//   	HAL_Delay(300);
+	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,1);
+	pwmlist1[0] = 100; pwmlist1[1] = 200; pwmlist1[2] = 300;
+	pwmlist1[3] = 400; pwmlist1[4] = 500;
+   	HAL_Delay(1000);
+   	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,0);
+	pwmlist1[0] = 900; pwmlist1[1] = 900; pwmlist1[2] = 900;
+	pwmlist1[3] = 900; pwmlist1[4] = 900;
+   	HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -181,7 +185,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 32000-1;
+  htim3.Init.Prescaler = 1600-1;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 1000-1;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
