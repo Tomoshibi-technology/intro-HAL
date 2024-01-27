@@ -62,10 +62,10 @@ static void MX_TIM3_Init(void);
 /* USER CODE BEGIN 0 */
 
 uint16_t  pwmlist1[] = {
-  100, 200, 300, 400, 500,
+  100, 200, 300, 400, 500
 };
 uint16_t  pwmlist2[] = {
-  900, 800, 700,
+  900, 800, 700, 600, 500
 };
 
 /* USER CODE END 0 */
@@ -101,6 +101,10 @@ int main(void)
   MX_DMA_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+//  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+//  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
+//  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_3, 500);
+//  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_4, 500);
 
   HAL_TIM_PWM_Start_DMA (&htim3, TIM_CHANNEL_3, (uint32_t*)pwmlist1, sizeof (pwmlist1) / sizeof (uint16_t));
   htim3.State = HAL_TIM_STATE_READY;
@@ -115,10 +119,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,1);
-   	HAL_Delay(200);
-   	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,0);
-   	HAL_Delay(300);
+//	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,1);
+//   	HAL_Delay(200);
+//   	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin,0);
+//   	HAL_Delay(300);
   }
   /* USER CODE END 3 */
 }
@@ -177,7 +181,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 12000-1;
+  htim3.Init.Prescaler = 32000-1;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 1000-1;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
