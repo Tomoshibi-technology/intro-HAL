@@ -1,0 +1,12 @@
+bno055_stm32.h:20:6:void bno055_assignI2C(I2C_HandleTypeDef*)	1
+bno055_stm32.h:24:6:void bno055_delay(int)	1
+bno055_stm32.h:32:6:void bno055_writeData(uint8_t, uint8_t)	23
+bno055_stm32.h:96:6:void bno055_readData(uint8_t, uint8_t*, uint8_t)	1
+main.cpp:77:5:int main()	3
+main.cpp:142:6:void SystemClock_Config()	3
+main.cpp:184:13:void MX_I2C1_Init()	2
+main.cpp:218:13:void MX_USART6_UART_Init()	2
+main.cpp:251:13:void MX_GPIO_Init()	1
+main.cpp:283:6:void Error_Handler()	1
+main.cpp:292:1:void __static_initialization_and_destruction_0(int, int)	3
+main.cpp:292:1:cpp)	1

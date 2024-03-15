@@ -1,0 +1,12 @@
+../Core/Inc/bno055_stm32.h:20:6:void bno055_assignI2C(I2C_HandleTypeDef*)	16	static
+../Core/Inc/bno055_stm32.h:24:6:void bno055_delay(int)	16	static
+../Core/Inc/bno055_stm32.h:32:6:void bno055_writeData(uint8_t, uint8_t)	40	static
+../Core/Inc/bno055_stm32.h:96:6:void bno055_readData(uint8_t, uint8_t*, uint8_t)	24	static
+../Core/Src/main.cpp:77:5:int main()	40	static
+../Core/Src/main.cpp:142:6:void SystemClock_Config()	88	static
+../Core/Src/main.cpp:184:13:void MX_I2C1_Init()	8	static
+../Core/Src/main.cpp:218:13:void MX_USART6_UART_Init()	8	static
+../Core/Src/main.cpp:251:13:void MX_GPIO_Init()	40	static
+../Core/Src/main.cpp:283:6:void Error_Handler()	4	static,ignoring_inline_asm
+../Core/Src/main.cpp:292:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/main.cpp:292:1:cpp)	8	static
